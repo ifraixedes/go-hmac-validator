@@ -4,7 +4,7 @@ package hmacval
 
 Process to validate an HMAC digest signature:
 
-Take request URL query parameters and body (I'll call it 'payload' onwards)
+Take map with string type keys and values (I'll call it 'payload' onwards)
  1. Exclude keys which shouldn't be considered to perform the HMAC signature
  2. If HMAC digest is inside of the payload then extract it and exclude it from the HMAC signature
  1. Performs character replacement on the payload keys, values or both

@@ -13,7 +13,7 @@ Take map with string type keys and values (I'll call it 'payload' onwards)
  1. If HMAC digest is inside of the payload then extract it and exclude it from the HMAC signature - DONE! (hmacSigValue func)
  2. Exclude keys which shouldn't be considered to perform the HMAC signature - DONE! (mapToSlice func)
  3. Performs character replacement on the payload keys, values or both - DONE! individual replacement (makeReplacements), both must be added to both slices
- 4. Sort the payload key/values lexicographically
+ 4. Sort the payload key/values lexicographically - DONE! (map is converted in one of the above steps in a slice of key and value pairs; this sort is done by keyValueSlice type which implement sort.Interface)
  5. Join the payload Keys and its values with a specified string or none
  6. Join the payload Keys/values pairs with a specific string or none
  7. Compute the digest on the payload with the specified secret and required encoding

@@ -104,13 +104,21 @@ func TestReplaceCharacters(t *testing.T) {
 }
 
 func TestJoinKeyValue(t *testing.T) {
-	t.Log("Not implemented")
-	t.Skip()
-}
+	type expect struct {
+		pairs  []string
+		link   string
+		result []string
+	}
 
-func TestJoinKeysValuesPairs(t *testing.T) {
-	t.Log("Not implemented")
-	t.Skip()
+	expectations := []expect{
+		expect{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "", []string{"key1value1", "key2value2", "key3value3"}},
+		expect{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "=", []string{"key1=value1", "key2=value2", "key3=value3"}},
+	}
+
+	for _, e := range expectations {
+		jp := joinPairs(e.pairs, e.link)
+		assert.EqualValues(t, e.result, jp, "Joined key/values aren't the expected ones")
+	}
 }
 
 func TestCalcuateDigest(t *testing.T) {

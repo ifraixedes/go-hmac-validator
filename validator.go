@@ -2,6 +2,7 @@ package hmacval
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -14,8 +15,8 @@ Take map with string type keys and values (I'll call it 'payload' onwards)
  2. Exclude keys which shouldn't be considered to perform the HMAC signature - DONE! (mapToSlice func)
  3. Performs character replacement on the payload keys, values or both - DONE! individual replacement (makeReplacements), both must be added to both slices
  4. Sort the payload key/values lexicographically - DONE! (map is converted in one of the above steps in a slice of key and value pairs; this sort is done by keyValueSlice type which implement sort.Interface)
- 5. Join the payload Keys and its values with a specified string or none
- 6. Join the payload Keys/values pairs with a specific string or none
+ 5. Join the payload Keys and its values with a specified string or none - DONE! (joinPairs)
+ 6. Join the payload Keys/values pairs with a specific string or none - DONE (strings.Join does exactly this operation)
  7. Compute the digest on the payload with the specified secret and required encoding
  8. Compare the resulted digest with the provided one (in the payload or aside) and returns if it matches or not.
 */
@@ -73,4 +74,15 @@ func makeReplacements(k []string, v []string, pairs []string) {
 			pairs[i] = r.Replace(pairs[i])
 		}
 	}
+}
+
+func joinPairs(pairs []string, link string) []string {
+	l := int(len(pairs) / 2)
+	r := make([]string, l)
+
+	for p := 0; p < l; p++ {
+		r[p] = fmt.Sprintf("%s%s%s", pairs[p*2], link, pairs[p*2+1])
+	}
+
+	return r
 }

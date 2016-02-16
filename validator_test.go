@@ -56,12 +56,51 @@ func TestMapToSlice(t *testing.T) {
 }
 
 func TestReplaceCharacters(t *testing.T) {
-	// Replace characters is possible to achieve with strings.Replacer
-	t.Log("Not implemented")
-	t.Skip()
-}
+	type expect struct {
+		keys   []string
+		values []string
+		pairs  []string
+		result []string
+	}
 
-func TestSortKeyValuePairs(t *testing.T) {
+	expectations := []expect{
+		expect{
+			[]string{"1", "one", "3", "three"},
+			[]string{"&", " ", "*", "star"},
+			[]string{"key1", "name&surname", "key2", "close to a *", "key3", "value3"},
+			[]string{"keyone", "name surname", "key2", "close to a star", "keythree", "value3"},
+		},
+		expect{
+			[]string{"2", "two"},
+			[]string{"&", " ", "*", "star"},
+			[]string{"key1", "name", "key2", "value2", "key3", "looking at a *"},
+			[]string{"key1", "name", "keytwo", "value2", "key3", "looking at a star"},
+		},
+		expect{
+			[]string{"2", "two"},
+			[]string{"&", " ", "*", "star"},
+			[]string{"key1", "name", "keytwo", "value2", "key3", "value3"},
+			[]string{"key1", "name", "keytwo", "value2", "key3", "value3"},
+		},
+		expect{
+			nil,
+			[]string{"&", " ", "*", "star"},
+			[]string{"key1", "A *", "keytwo", "value2", "key3", "name&surname"},
+			[]string{"key1", "A star", "keytwo", "value2", "key3", "name surname"},
+		},
+		expect{
+			[]string{"2", "two"},
+			nil,
+			[]string{"key1", "A *", "key2", "value2", "key3", "name&surname"},
+			[]string{"key1", "A *", "keytwo", "value2", "key3", "name&surname"},
+		},
+		expect{nil, nil, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}},
+	}
+
+	for _, e := range expectations {
+		makeReplacements(e.keys, e.values, e.pairs)
+		assert.EqualValues(t, e.result, e.pairs, "Replacements aren't the expected ones")
+	}
 }
 
 func TestJoinKeyValue(t *testing.T) {

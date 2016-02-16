@@ -1,15 +1,18 @@
 package hmacval
 
-import "errors"
+import (
+	"errors"
+	"strings"
+)
 
 /*
 
 Process to validate an HMAC digest signature:
 
 Take map with string type keys and values (I'll call it 'payload' onwards)
- 1. If HMAC digest is inside of the payload then extract it and exclude it from the HMAC signature - DONE (hmacSigValue func)!
- 2. Exclude keys which shouldn't be considered to perform the HMAC signature - DONE (mapToSlice func)!
- 3. Performs character replacement on the payload keys, values or both
+ 1. If HMAC digest is inside of the payload then extract it and exclude it from the HMAC signature - DONE! (hmacSigValue func)
+ 2. Exclude keys which shouldn't be considered to perform the HMAC signature - DONE! (mapToSlice func)
+ 3. Performs character replacement on the payload keys, values or both - DONE! individual replacement (makeReplacements), both must be added to both slices
  4. Sort the payload key/values lexicographically
  5. Join the payload Keys and its values with a specified string or none
  6. Join the payload Keys/values pairs with a specific string or none
@@ -52,6 +55,22 @@ PayloadLoop:
 }
 
 // makeReplacements replace the old, new string pairs of the slice of key/value pairs.
-// k make replacement on keys (odd idexes of pairs) and v on values (even indexes of pairs).
+// k make replacement on keys (odd indexes of pairs) and v on values (even indexes of pairs).
+// k and v can be null to represent no replacement on keys and values respectively.
 func makeReplacements(k []string, v []string, pairs []string) {
+	if k != nil {
+		r := strings.NewReplacer(k...)
+
+		for i := 0; i < len(pairs); i += 2 {
+			pairs[i] = r.Replace(pairs[i])
+		}
+	}
+
+	if v != nil {
+		r := strings.NewReplacer(v...)
+
+		for i := 1; i < len(pairs); i += 2 {
+			pairs[i] = r.Replace(pairs[i])
+		}
+	}
 }

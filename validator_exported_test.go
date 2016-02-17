@@ -1,7 +1,9 @@
 package hmacval
 
 import (
+	"crypto/sha1"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"hash"
 	"testing"
@@ -103,21 +105,36 @@ func TestVal(t *testing.T) {
 		dmac, err := hex.DecodeString(e.hmac)
 		require.NoError(t, err)
 		val := NewVal(e.h, e.kexc, e.krepl, e.vrepl, e.kvlink, e.plink)
-		assert.Equal(t, e.valid, val(e.secret, e.payload, dmac), "HMAC validation result hasn't matched the result of expectation %d", i)
+		assert.Equal(t, e.valid, val(e.secret, "", e.payload, dmac), "HMAC validation result hasn't matched the result of expectation %d", i)
 	}
 }
 
 func TestShopifyAuthSignature(t *testing.T) {
-	t.Log("Not implemented")
-	t.Skip()
+	payload := map[string]string{"shop&name": "some%shop&myshopify", "ts=timestamp": "0123456789", "signature": "6e39a2ea9e497af6cb806720da1f1bf3", "hmac": "b0fe5821780f72f903b23199fc80ef888831cb10dbb7ee9b2182ad2066cedc4c"}
+	dmac, err := hex.DecodeString("b0fe5821780f72f903b23199fc80ef888831cb10dbb7ee9b2182ad2066cedc4c")
+	require.NoError(t, err)
+	val := NewVal(
+		sha256.New,
+		[]string{"signature", "hmac"},
+		[]string{"&", "%26", "%", "%25", "=", "%3D"},
+		[]string{"&", "%26", "%", "%25"},
+		"=",
+		"&")
+	assert.Equal(t, true, val("secret", "", payload, dmac), "HMAC validation should be true")
+
 }
 
 func TestTwilioAuthSignature(t *testing.T) {
-	t.Log("Not implemented")
-	t.Skip()
+	payload := map[string]string{"CallSid": "CA1234567890ABCDE", "Caller": "+14158675309", "Digits": "1234", "From": "+14158675309", "To": "+18005551212"}
+	dmac, err := base64.StdEncoding.DecodeString("RSOYDt4T1cUTdK1PDd93/VVr8B8=")
+	require.NoError(t, err)
+	val := NewVal(sha1.New, nil, nil, nil, "", "")
+	assert.Equal(t, true, val("12345", "https://mycompany.com/myapp.php?foo=1&bar=2", payload, dmac), "HMAC validation should be true")
 }
 
 func TestPusherAuthSignature(t *testing.T) {
-	t.Log("Not implemented")
-	t.Skip()
+	dmac, err := hex.DecodeString("afaed3695da2ffd16931f457e338e6c9f2921fa133ce7dac49f529792be6304c")
+	require.NoError(t, err)
+	val := NewVal(sha256.New, nil, nil, nil, "", "")
+	assert.Equal(t, true, val("7ad3773142a6692b25b8", "1234.1234:presence-foobar:{\"user_id\":10,\"user_info\":{\"name\":\"Mr. Pusher\"}}", nil, dmac), "HMAC validation should be true")
 }

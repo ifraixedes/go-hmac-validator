@@ -13,28 +13,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// DEPRECATE THIS TEST, hmacSigValue will be removed
-func TestHmacSigValue(t *testing.T) {
-	type expect struct {
-		key     string
-		payload map[string]string
-		sig     string
-		err     error
-	}
-
-	expectations := []expect{
-		expect{"hmac", map[string]string{"key1": "value1", "key2": "value2", "hmac": "the-signature"}, "the-signature", nil},
-		expect{"signature", map[string]string{"key1": "value1", "key2": "value2", "signature": "the-signature"}, "the-signature", nil},
-		expect{"hmac", map[string]string{"key1": "value1", "key2": "value2", "signature": "the-signature"}, "", ErrSigKeyNotFound},
-	}
-
-	for _, e := range expectations {
-		sig, err := hmacSigValue(e.key, e.payload)
-		assert.Equal(t, e.sig, sig, "Sinature value doen't match")
-		assert.Equal(t, e.err, err, "Returned error value doesn't match")
-	}
-}
-
 func TestMapToSlice(t *testing.T) {
 	type expect struct {
 		keysToExclude []string

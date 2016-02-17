@@ -1,8 +1,10 @@
 package hmacval
 
 import (
+	"crypto/hmac"
 	"errors"
 	"fmt"
+	"hash"
 	"strings"
 )
 
@@ -17,8 +19,8 @@ Take map with string type keys and values (I'll call it 'payload' onwards)
  4. Sort the payload key/values lexicographically - DONE! (map is converted in one of the above steps in a slice of key and value pairs; this sort is done by keyValueSlice type which implement sort.Interface)
  5. Join the payload Keys and its values with a specified string or none - DONE! (joinPairs)
  6. Join the payload Keys/values pairs with a specific string or none - DONE (strings.Join does exactly this operation)
- 7. Compute the digest on the payload with the specified secret and required encoding
- 8. Compare the resulted digest with the provided one (in the payload or aside) and returns if it matches or not.
+ 7. Compute the digest on the payload with the specified secret and required encoding - DONE (verifyHMAC); encoding isn't needed as the encoded signature can be decoded to []byte easily with hex.DecodeString, base64.StdEncoding.DecodeString, etc.
+ 8. Compare the resulted digest with the provided one (in the payload or aside) and returns if it matches or not. - DONE (verifyHMAC)
 */
 
 // ErrSigKeyNotFound is returned when payload doesn't contain a specified key with its own signature as a value
@@ -85,4 +87,13 @@ func joinPairs(pairs []string, link string) []string {
 	}
 
 	return r
+}
+
+// veiryfyHMAC generated the HMAC signature with Hash and secret and compare with the provided digest
+func verifyHMAC(h func() hash.Hash, secret string, payload string, digest []byte) bool {
+	hHash := hmac.New(h, []byte(secret))
+	hHash.Write([]byte(payload))
+	computedDigest := hHash.Sum(nil)
+
+	return hmac.Equal(computedDigest, digest)
 }

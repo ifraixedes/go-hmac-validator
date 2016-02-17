@@ -17,7 +17,7 @@ var ErrSigKeyNotFound = errors.New("Signature key not found in payload")
 // It returns true if they match, otherwise false
 type Val func(secret string, prefix string, payload map[string]string, digest []byte) bool
 
-// Create a Val type value which will use the specified Hash algorithm, exclude the specified keys, make the specified replacements in keys
+// NewVal creates a Val type value which will use the specified Hash algorithm, exclude the specified keys, make the specified replacements in keys
 // & values, join the each key and value pair and all the pairs with the specified links.
 // Replacements are expressed as pairs (odd slice positions are the strings value to be replaced by the following element in the slice)
 func NewVal(h func() hash.Hash, keysToExclude []string, keyRepls []string, valueRepls []string, keyValueLink string, pairsLink string) Val {
@@ -98,7 +98,7 @@ func joinPairs(pairs []string, link string) []string {
 // veiryfyHMAC generated the HMAC signature with Hash and secret and compare with the provided digest
 func verifyHMAC(h func() hash.Hash, secret string, payload string, digest []byte) bool {
 	hHash := hmac.New(h, []byte(secret))
-	hHash.Write([]byte(payload))
+	_, _ = hHash.Write([]byte(payload)) // assignations are required not to get an errcheck issue (linter)
 	computedDigest := hHash.Sum(nil)
 
 	return hmac.Equal(computedDigest, digest)

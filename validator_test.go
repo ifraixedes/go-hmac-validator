@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// DEPRECATE THIS TEST, hmacSigValue will be removed
 func TestHmacSigValue(t *testing.T) {
 	type expect struct {
 		key     string

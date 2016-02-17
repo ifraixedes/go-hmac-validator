@@ -1,5 +1,6 @@
 package hmacval
 
+// DEPREATE ALL THE IMPLEMENTATION OF THIS FILE; it isn't used any more
 type keyValueSlice []string
 
 func (kvs keyValueSlice) Len() int {

@@ -10,3 +10,6 @@ lint:
 
 test:
 	go test -v .
+
+doc:
+	godoc github.com/ifraixedes/go-hmac-validator

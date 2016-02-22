@@ -17,7 +17,7 @@ The current dependencies are only used in the tests, check `makefile` `deps` tar
 
 ## Roadmap
 
-- Write [Golang Examples](https://blog.golang.org/examples) for each of the providers as I've considered to implement this package [Shopify](https://docs.shopify.com/api/authentication/oauth), [Twilio](https://www.twilio.com/docs/api/security) and [Pusher](https://pusher.com/docs/auth_signatures)
+Write some benchmarks and do an implementation of using key/value byte slice as payload than a map to compare how map type probably penalize and it may be avoided.
 
 ## Why
 

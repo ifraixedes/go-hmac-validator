@@ -9,11 +9,9 @@ Package is documented following [Golang conventions](http://blog.golang.org/godo
 
 ## Golang Version & dependencies
 
-I started this implementation with Golang 1.6rc2 and I update to 1.6 when it was officially released.
+The library may work with a few previous Golang releases, however I haven't tested in any than 1.6.
 
-The library should work with version 1.5 using the `GOVENDOREXPERIMENT=1` environment variable as this repo has vendorized the current dependencies, and the changes in 1.6 which affect to this implementation are to boost performance than deprecating or breaking anything; however I haven't tried to run the test on 1.5 or a previous version rewriting the imported package paths.
-
-The current dependencies are only used in the tests, check `makefile` `deps` target and `vendor` folder to know which ones they are.
+The current dependencies are only used in the tests, which are [testify](https://godoc.org/github.com/stretchr/testify) [assert](https://godoc.org/github.com/stretchr/testify/assert) and [require](https://godoc.org/github.com/stretchr/testify/require)
 
 ## Roadmap
 

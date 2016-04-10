@@ -89,7 +89,7 @@ func makeReplacements(k []string, v []string, pairs []string) {
 }
 
 func joinPairs(pairs []string, link string) []string {
-	l := int(len(pairs) / 2)
+	l := len(pairs) / 2
 	r := make([]string, l)
 
 	for p := 0; p < l; p++ {

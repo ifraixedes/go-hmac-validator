@@ -2,7 +2,7 @@
 // It tries to provide a generic type that allow to verify as much providers as possible,
 // without exposing specific functions fo each one nor exposing high level functionalities
 // which are easy to perfom with the Golan package library
-package hmacval
+package hmacval // import "go.fraixed.es/hmacval"
 
 import (
 	"crypto/hmac"

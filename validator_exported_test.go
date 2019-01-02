@@ -28,7 +28,7 @@ func TestVal(t *testing.T) {
 	}
 
 	expectations := []expect{
-		expect{
+		{
 			sha256.New,
 			nil,
 			nil,
@@ -40,7 +40,7 @@ func TestVal(t *testing.T) {
 			"4d240c02738deb03be1b80361fef9c7c9ebb4db345d798946d9c5005e858dc4e",
 			true,
 		},
-		expect{
+		{
 			sha256.New,
 			nil,
 			nil,
@@ -52,7 +52,7 @@ func TestVal(t *testing.T) {
 			"8177695f5c7227910968d795d458a2d131318cf0dd763b8e03a3767f6e80dbaf",
 			true,
 		},
-		expect{
+		{
 			sha256.New,
 			nil,
 			nil,
@@ -64,7 +64,7 @@ func TestVal(t *testing.T) {
 			"59e0a47b8cb0220207101a844200073d87dccf3611ac230a56fab07352109b95",
 			true,
 		},
-		expect{
+		{
 			sha256.New,
 			[]string{"key2"},
 			nil,
@@ -76,7 +76,7 @@ func TestVal(t *testing.T) {
 			"b7ccb53c1546eadd654ff633972d841347669b25fbc6a945f79a654ba6b265fe",
 			true,
 		},
-		expect{
+		{
 			sha256.New,
 			[]string{"key3"},
 			[]string{"1", "one"},
@@ -88,7 +88,7 @@ func TestVal(t *testing.T) {
 			"c1828816eac7fa67fbe3847bf4cab5ecfd93b83fe1fc419044c930e237b0e9d2",
 			true,
 		},
-		expect{
+		{
 			sha256.New,
 			[]string{"key3"},
 			[]string{"1", "one"},

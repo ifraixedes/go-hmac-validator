@@ -21,12 +21,12 @@ func TestMapToSlice(t *testing.T) {
 	}
 
 	expectations := []expect{
-		expect{[]string{"key2", "key3"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1"}},
-		expect{[]string{"key1"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key2", "value2", "key3", "value3"}},
-		expect{[]string{"key2", "not-exist"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key3", "value3"}},
-		expect{[]string{"key1", "key2", "key3"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{}},
-		expect{[]string{}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key2", "value2", "key3", "value3"}},
-		expect{nil, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key2", "value2", "key3", "value3"}},
+		{[]string{"key2", "key3"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1"}},
+		{[]string{"key1"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key2", "value2", "key3", "value3"}},
+		{[]string{"key2", "not-exist"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key3", "value3"}},
+		{[]string{"key1", "key2", "key3"}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{}},
+		{[]string{}, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key2", "value2", "key3", "value3"}},
+		{nil, map[string]string{"key1": "value1", "key2": "value2", "key3": "value3"}, []string{"key1", "value1", "key2", "value2", "key3", "value3"}},
 	}
 
 	for _, e := range expectations {
@@ -49,43 +49,43 @@ func TestReplaceCharacters(t *testing.T) {
 	}
 
 	expectations := []expect{
-		expect{
+		{
 			[]string{"1", "one", "3", "three"},
 			[]string{"&", " ", "*", "star"},
 			[]string{"key1", "name&surname", "key2", "close to a *", "key3", "value3"},
 			[]string{"keyone", "name surname", "key2", "close to a star", "keythree", "value3"},
 		},
-		expect{
+		{
 			[]string{"2", "two"},
 			[]string{"&", " ", "*", "star"},
 			[]string{"key1", "name", "key2", "value2", "key3", "looking at a *"},
 			[]string{"key1", "name", "keytwo", "value2", "key3", "looking at a star"},
 		},
-		expect{
+		{
 			[]string{"2", "two"},
 			[]string{"&", " ", "*", "star"},
 			[]string{"key1", "name", "keytwo", "value2", "key3", "value3"},
 			[]string{"key1", "name", "keytwo", "value2", "key3", "value3"},
 		},
-		expect{
+		{
 			[]string{"1", "one", "one", "three"},
 			[]string{"&", "*", "*", "star"},
 			[]string{"key1", "name&surname", "keyone", "close to a * & *", "key3", "value3"},
 			[]string{"keyone", "name*surname", "keythree", "close to a star * star", "key3", "value3"},
 		},
-		expect{
+		{
 			nil,
 			[]string{"&", " ", "*", "star"},
 			[]string{"key1", "A *", "keytwo", "value2", "key3", "name&surname"},
 			[]string{"key1", "A star", "keytwo", "value2", "key3", "name surname"},
 		},
-		expect{
+		{
 			[]string{"2", "two"},
 			nil,
 			[]string{"key1", "A *", "key2", "value2", "key3", "name&surname"},
 			[]string{"key1", "A *", "keytwo", "value2", "key3", "name&surname"},
 		},
-		expect{nil, nil, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}},
+		{nil, nil, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}, []string{"key1", "A *", "key2", "value2", "key3", "name&surname"}},
 	}
 
 	for _, e := range expectations {
@@ -102,8 +102,8 @@ func TestJoinKeyValue(t *testing.T) {
 	}
 
 	expectations := []expect{
-		expect{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "", []string{"key1value1", "key2value2", "key3value3"}},
-		expect{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "=", []string{"key1=value1", "key2=value2", "key3=value3"}},
+		{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "", []string{"key1value1", "key2value2", "key3value3"}},
+		{[]string{"key1", "value1", "key2", "value2", "key3", "value3"}, "=", []string{"key1=value1", "key2=value2", "key3=value3"}},
 	}
 
 	for _, e := range expectations {
@@ -127,7 +127,7 @@ func TestVerifyHMAC(t *testing.T) {
 	}
 
 	expectations := []expect{
-		expect{
+		{
 			sha256.New,
 			"hush",
 			"shop=some-shop.myshopify.com&timestamp=1337178173",
@@ -135,7 +135,7 @@ func TestVerifyHMAC(t *testing.T) {
 			true,
 			hex.DecodeString,
 		},
-		expect{
+		{
 			sha1.New,
 			"12345",
 			"https://mycompany.com/myapp.php?foo=1&bar=2CallSidCA1234567890ABCDECaller+14158675309Digits1234From+14158675309To+18005551212",
@@ -143,7 +143,7 @@ func TestVerifyHMAC(t *testing.T) {
 			true,
 			b64Decoder,
 		},
-		expect{
+		{
 			sha1.New,
 			"wrong-secret",
 			"https://mycompany.com/myapp.php?foo=1&bar=2CallSidCA1234567890ABCDECaller+14158675309Digits1234From+14158675309To+18005551212",
@@ -151,7 +151,7 @@ func TestVerifyHMAC(t *testing.T) {
 			false,
 			b64Decoder,
 		},
-		expect{
+		{
 			sha1.New,
 			"wrong-secret",
 			"https://mycompany.com/myapp.php?foo=1&bar=2CallSidCA1234567890ABCDECaller+14158675309Digits1234From+14158675309To+18005551212",
